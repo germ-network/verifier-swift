@@ -58,7 +58,7 @@ public struct TinfoilClient: Codable, Sendable {
             eifHash: eifHash
         )
     }
-    
+
     public func data(
         enclaveState: EnclaveState,
         path: String
@@ -69,13 +69,13 @@ public struct TinfoilClient: Codable, Sendable {
         let pinDelegate = CertPinDelegate(
             pinnedCertDigest: enclaveState.certFingerPrint
         )
-        
+
         let session = URLSession(
             configuration: .ephemeral,
             delegate: pinDelegate,
             delegateQueue: nil
         )
-        
+
         var urlComponents = URLComponents()
         urlComponents.host = enclave
         urlComponents.scheme = URLScheme.https.rawValue
@@ -86,7 +86,7 @@ public struct TinfoilClient: Codable, Sendable {
 
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.get.rawValue
-        
+
         return try await session.data(for: request)
     }
 }
@@ -105,4 +105,5 @@ enum TinfoilError: Error {
     case regexMiss
     case noAttestation
     case decodeFailure
+    case missingResult
 }

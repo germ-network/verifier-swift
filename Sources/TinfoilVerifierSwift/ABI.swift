@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TinfoilVerifier
 
 //TODO: for Tinfoil ABI
 //stubbing interface from the golang function interface that may be missing
@@ -38,11 +39,19 @@ enum PredicateType: String, Decodable {
     case awsNitroEnclaveV1 = "https://tinfoil.sh/predicate/aws-nitro-enclave/v1"
 }
 
-public struct TinfoilVerifier {
+public struct TrustRoot {
     ///client should store this and have policy for refetch
     //since this reaches into sigstore/tuf, maybe live with this being
     //a blocking sync method
     public static func fetchTrustRoot() async throws -> Data {
-        throw TinfoilError.mocking
+        let errorPtr: NSErrorPointer = nil
+        let result = LiteffiFetchTrustRootFFI(errorPtr)
+        if let error = errorPtr?.pointee {
+            throw error
+        }
+        guard let result else {
+            throw TinfoilError.missingResult
+        }
+        return result
     }
 }

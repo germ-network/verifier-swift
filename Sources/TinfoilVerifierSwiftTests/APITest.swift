@@ -15,7 +15,7 @@ struct APITest {
 
     @Test func testTinfoilAPI() async throws {
         //fetch the SigStore trust root and cache it
-        let trustRoot = try await TinfoilVerifier.fetchTrustRoot()
+        let trustRoot = try await TrustRoot.fetchTrustRoot()
 
         let tinfoilClient = TinfoilClient(
             enclave: Self.trustedApplication,
@@ -26,7 +26,7 @@ struct APITest {
         let enclaveState = try await tinfoilClient.verify(
             sigStoreTrustRoot: trustRoot
         )
-        
+
         //issue a request
         let (data, result) = try await tinfoilClient.data(
             enclaveState: enclaveState,
