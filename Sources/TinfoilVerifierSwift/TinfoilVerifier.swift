@@ -36,10 +36,10 @@ public struct TinfoilClient: Codable, Sendable {
         )
         async let (enclaveAttestation, enclaveCertFP) = try await Enclave.fetch(host: enclave)
 
-        let codeMeasurements = try await SigStore.verifyMeasurementAttestation(
-            trustedRootJSON: sigStoreTrustRoot,
-            bundleJSON: sigStoreBundle,
-            hexDigest: eifHash,
+        let codeMeasurements = try await Enclave.verifyAttestation(
+            rootTrustBundle: sigStoreTrustRoot,
+            repoBundle: sigStoreBundle,
+            repoHash: eifHash,
             repo: repo
         )
 
