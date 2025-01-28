@@ -20,7 +20,10 @@ let package = Package(
         ),
         .binaryTarget(
             name: "TinfoilVerifier",
-            path: "TinfoilVerifier.xcframework"),
+            url:
+                "https://github.com/germ-network/tinfoil-verifier/releases/download/0.0.9ffi/TinfoilVerifier.xcframework.zip",
+            checksum: "b1d70b133fe0973384ff893e9971d3863087cc0fe06a56d00198bfff63885ae4"
+        ),
         .testTarget(
             name: "TinfoilVerifierSwiftTests",
             dependencies: ["TinfoilVerifierSwift"]
