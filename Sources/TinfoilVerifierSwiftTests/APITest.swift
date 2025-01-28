@@ -10,8 +10,11 @@ import TinfoilVerifierSwift
 
 //Example of APIUsage
 struct APITest {
-    static let trustedApplication = "inference-enclave.tinfoil.sh"
-    static let repo = "tinfoilanalytics/nitro-enclave-build-demo"
+    //    static let trustedApplication = "inference-enclave.tinfoil.sh"
+    //    static let repo = "tinfoilanalytics/nitro-enclave-build-demo"
+
+    static let trustedApplication = "models.default.tinfoil.sh"
+    static let repo = "tinfoilanalytics/default-models-nitro"
 
     @Test func testTinfoilAPI() async throws {
         //fetch the SigStore trust root and cache it
