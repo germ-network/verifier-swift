@@ -49,7 +49,7 @@ public struct TinfoilClient: Codable, Sendable {
             throw TinfoilError.mismatchedCertificates
         }
 
-        guard enclaveMeasurements == codeMeasurements else {
+        guard enclaveMeasurements.equals(codeMeasurements) else {
             throw TinfoilError.mismatchedMeasurements
         }
 
