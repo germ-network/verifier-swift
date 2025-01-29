@@ -61,7 +61,9 @@ public struct TinfoilClient: Codable, Sendable {
 
     public func data(
         enclaveState: EnclaveState,
-        path: String
+        path: String,
+        contentType: String?,
+        body: Data?
     ) async throws -> (
         Data,
         URLResponse
@@ -86,6 +88,12 @@ public struct TinfoilClient: Codable, Sendable {
 
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.get.rawValue
+        if let contentType {
+            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        }
+        if let body {
+            request.httpBody = body
+        }
 
         return try await session.data(for: request)
     }
