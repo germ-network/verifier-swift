@@ -88,7 +88,7 @@ public struct TinfoilClient: Codable, Sendable {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.get.rawValue
+        request.httpMethod = method.rawValue
         if let contentType {
             request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
