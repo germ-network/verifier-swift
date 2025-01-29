@@ -91,6 +91,7 @@ struct Github {
 
 public struct HTTPMethod {
     public static let get = HTTPMethod(rawValue: "GET")
+    public static let post = HTTPMethod(rawValue: "POST")
 
     public let rawValue: String
 }

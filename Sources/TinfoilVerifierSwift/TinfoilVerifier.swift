@@ -62,6 +62,7 @@ public struct TinfoilClient: Codable, Sendable {
     public func data(
         enclaveState: EnclaveState,
         path: String,
+        method: HTTPMethod,
         contentType: String?,
         body: Data?
     ) async throws -> (
