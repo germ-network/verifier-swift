@@ -63,7 +63,7 @@ public struct TrustRoot {
     ///client should store this and have policy for refetch
     //since this reaches into sigstore/tuf, maybe live with this being
     //a blocking sync method
-    public static func fetchTrustRoot() async throws -> Data {
+    public static func fetchTrustRoot() throws -> Data {
         let errorPtr: NSErrorPointer = nil
         let result = LiteffiFetchTrustRootFFI(errorPtr)
         if let error = errorPtr?.pointee {
