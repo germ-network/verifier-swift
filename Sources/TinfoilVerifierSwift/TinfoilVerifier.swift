@@ -36,10 +36,10 @@ public struct TinfoilClient: Codable, Sendable {
         )
         async let (enclaveAttestation, enclaveCertFP) = try await Enclave.fetch(host: enclave)
 
-        let codeMeasurements = try await SigStore.verifyMeasurementAttestation(
-            trustedRootJSON: sigStoreTrustRoot,
-            bundleJSON: sigStoreBundle,
-            hexDigest: eifHash,
+        let codeMeasurements = try await Enclave.verifyAttestation(
+            rootTrustBundle: sigStoreTrustRoot,
+            repoBundle: sigStoreBundle,
+            repoHash: eifHash,
             repo: repo
         )
 
@@ -49,7 +49,7 @@ public struct TinfoilClient: Codable, Sendable {
             throw TinfoilError.mismatchedCertificates
         }
 
-        guard enclaveMeasurements == codeMeasurements else {
+        guard enclaveMeasurements.equals(codeMeasurements) else {
             throw TinfoilError.mismatchedMeasurements
         }
 
@@ -58,10 +58,13 @@ public struct TinfoilClient: Codable, Sendable {
             eifHash: eifHash
         )
     }
-    
+
     public func data(
         enclaveState: EnclaveState,
-        path: String
+        path: String,
+        method: HTTPMethod,
+        contentType: String?,
+        body: Data?
     ) async throws -> (
         Data,
         URLResponse
@@ -69,13 +72,13 @@ public struct TinfoilClient: Codable, Sendable {
         let pinDelegate = CertPinDelegate(
             pinnedCertDigest: enclaveState.certFingerPrint
         )
-        
+
         let session = URLSession(
             configuration: .ephemeral,
             delegate: pinDelegate,
             delegateQueue: nil
         )
-        
+
         var urlComponents = URLComponents()
         urlComponents.host = enclave
         urlComponents.scheme = URLScheme.https.rawValue
@@ -85,8 +88,14 @@ public struct TinfoilClient: Codable, Sendable {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.get.rawValue
-        
+        request.httpMethod = method.rawValue
+        if let contentType {
+            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        }
+        if let body {
+            request.httpBody = body
+        }
+
         return try await session.data(for: request)
     }
 }
@@ -105,4 +114,5 @@ enum TinfoilError: Error {
     case regexMiss
     case noAttestation
     case decodeFailure
+    case missingResult
 }

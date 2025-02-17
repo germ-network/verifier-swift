@@ -10,10 +10,8 @@ import Testing
 @testable import TinfoilVerifierSwift
 
 struct EnclaveTests {
-    static let trustedApplication = "inference-enclave.tinfoil.sh"
-
     @Test func testEnclaves() async throws {
-        let (document, cert) = try await Enclave.fetch(host: Self.trustedApplication)
+        let (document, cert) = try await Enclave.fetch(host: APITest.trustedApplication)
     }
 
 }

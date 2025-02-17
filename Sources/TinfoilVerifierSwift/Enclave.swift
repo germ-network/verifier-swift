@@ -40,6 +40,11 @@ struct Enclave {
     }
 }
 
+struct Document: Decodable {
+    let format: String
+    let body: String
+}
+
 struct URLScheme {
     public static let https = URLScheme(rawValue: "https")
 

@@ -19,7 +19,7 @@ enum CertPinning {  // just for the namespace
         guard let trust = challenge.protectionSpace.serverTrust,
             let trustCertificateChain = SecTrustCopyCertificateChain(trust)
                 as? [SecCertificate],
-            let leaf = trustCertificateChain.last
+            let leaf = trustCertificateChain.first
         else {
             throw CertPinError.missingCertificate
         }
